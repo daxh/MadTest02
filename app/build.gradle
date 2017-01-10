@@ -39,5 +39,7 @@ dependencies {
     // AppCompat
     compile 'com.android.support:appcompat-v7:25.1.0'
 
+    // Pretty Logger
+    compile 'com.orhanobut:logger:1.15'
 
 }
