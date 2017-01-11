@@ -1,8 +1,9 @@
 # MadTest02
 
 This is a try to implement such common task as displaying a collection of items in a RecyclerView
-using Rx with additional goodies such as few item view types, infinite scrolling, unified and easy
+using Rx with additional goodies such as few itemView types, infinite scrolling, unified and easy
 management.
 
-1) I am starting from implementation of simple RecyclerView with infinite scrolling and support for
-few view item types without Rx or any other modern stuff. Just plain and straightforward implementation.
+1) I am starting from a simple implementation of RecyclerView with basic support for clicks. It will be
+a good starting point for further explorations and comparisons. Also, obviously some of classes created
+here will be reused on the next stages.
