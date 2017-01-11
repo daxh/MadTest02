@@ -18,7 +18,7 @@
         </activity>
 
         <activity
-            android:name=".activities.ClassicRecyclerViewUsageExampleActivity"
+            android:name=".classic.ClassicRecyclerViewUsageExampleActivity"
             android:label="@string/title_classic_recyclerview_usage_example"/>
     </application>
 

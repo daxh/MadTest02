@@ -1,4 +1,4 @@
-package com.daxh.explore.madtest02.activities;
+package com.daxh.explore.madtest02.classic;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

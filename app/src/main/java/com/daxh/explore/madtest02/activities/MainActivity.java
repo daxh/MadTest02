@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.daxh.explore.madtest02.R;
+import com.daxh.explore.madtest02.classic.ClassicRecyclerViewUsageExampleActivity;
 import com.daxh.explore.madtest02.utils.BindingUtils;
 
 public class MainActivity extends AppCompatActivity {
