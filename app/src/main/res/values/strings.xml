@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MadTest02</string>
+    <string name="bt_classic_recyclerview">CLASSIC RECYCLER VIEW</string>
+    <string name="title_classic_recyclerview_usage_example">Classic Recycler View Usage Example</string>
 </resources>
