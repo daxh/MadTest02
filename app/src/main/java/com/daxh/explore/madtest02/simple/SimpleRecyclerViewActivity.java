@@ -1,4 +1,4 @@
-package com.daxh.explore.madtest02.classic;
+package com.daxh.explore.madtest02.simple;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class ClassicRecyclerViewUsageExampleActivity extends AppCompatActivity {
+public class SimpleRecyclerViewActivity extends AppCompatActivity {
 
     private RecyclerView rvItems;
     private LinearLayoutManager llmItems;
@@ -33,7 +33,7 @@ public class ClassicRecyclerViewUsageExampleActivity extends AppCompatActivity {
         for (String s : strings) items.add(new Item(s));
 
         // Creating adapter
-        ClassicRecyclerViewAdapter adapter = new ClassicRecyclerViewAdapter(items);
+        SimpleRecyclerViewAdapter adapter = new SimpleRecyclerViewAdapter(items);
 
         // Setting up adapter for RecyclerView
         rvItems.setAdapter(adapter);

@@ -18,8 +18,8 @@
         </activity>
 
         <activity
-            android:name=".classic.ClassicRecyclerViewUsageExampleActivity"
-            android:label="@string/title_classic_recyclerview_usage_example"/>
+            android:name=".simple.SimpleRecyclerViewActivity"
+            android:label="@string/title_simple_recyclerview_usage_example"/>
     </application>
 
 </manifest>

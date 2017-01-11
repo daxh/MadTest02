@@ -1,4 +1,4 @@
-package com.daxh.explore.madtest02.classic;
+package com.daxh.explore.madtest02.simple;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,11 +11,11 @@ import com.daxh.explore.madtest02.common.ItemViewHolder;
 
 import java.util.ArrayList;
 
-public class ClassicRecyclerViewAdapter extends RecyclerView.Adapter<ItemViewHolder> {
+public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
     private ArrayList<Item> items;
 
-    public ClassicRecyclerViewAdapter(ArrayList<Item> items) {
+    public SimpleRecyclerViewAdapter(ArrayList<Item> items) {
         this.items = items;
     }
 

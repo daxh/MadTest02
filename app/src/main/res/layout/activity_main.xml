@@ -12,9 +12,9 @@
     tools:context="com.daxh.explore.madtest02.activities.MainActivity">
 
     <Button
-        android:id="@+id/btClassicRecycleView"
+        android:id="@+id/btSimpleRecycleView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/bt_classic_recyclerview"/>
+        android:text="@string/bt_simple_recyclerview"/>
 
 </RelativeLayout>
