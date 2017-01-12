@@ -8,3 +8,7 @@ management.
 this simple case there is no place to use Rx, as I believe. It will be a good starting point for further
 explorations and comparisons. Also, obviously some of classes created here will be reused on the next
 stages.
+
+2) **FilteredRecyclerViewActivity**, and **FilteredRecyclerViewAdapter** respectively, is an example of
+how filtering functionality could be added to RecyclerView in a classic way.
+
