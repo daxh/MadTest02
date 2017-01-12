@@ -31,6 +31,14 @@ public class RxFilteredRecyclerViewAdapter extends RecyclerView.Adapter<ItemView
                 .executeIfPresent(oi -> filteredItems = Optional.of(new ArrayList<>(oi)))
                 .executeIfAbsent(() -> filteredItems = Optional.of(new ArrayList<Item>()));
 
+        // We using Rx to perform all filtering operations
+        // on background thread and update results on the
+        // main thread. 'debounce' operator used to throttle
+        // some ongoing events, as we don't want to have any
+        // so called 'backpressure problems'. These 2 aspects
+        // (thread switching and 'debounce') need here to
+        // replace Filter class, that was used in classic
+        // implementation.
         Optional.ofNullable(keywords).ifPresent(k -> k
                 .debounce(100, TimeUnit.MILLISECONDS)
                 .subscribe(keyword -> { compositeSubscription.add(Observable.from(originalItems.get())

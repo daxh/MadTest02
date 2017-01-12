@@ -47,6 +47,11 @@ public class FilteredRecyclerViewAdapter extends RecyclerView.Adapter<ItemViewHo
         return itemFilter;
     }
 
+    // According to official documentation:
+    // https://developer.android.com/reference/android/widget/Filter.html
+    // This class allows to execute filtering operations
+    // asynchronously and properly cancel that iterations
+    // that became un-relevant. Obviously, we using it here.
     public class ItemFilter extends Filter {
 
         @Override
