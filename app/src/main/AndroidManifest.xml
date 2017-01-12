@@ -26,6 +26,10 @@
             android:label="@string/title_classic_recyclerview_usage_example"/>
 
         <activity
+            android:name=".classic.FilteredRecyclerViewActivity"
+            android:label="@string/title_filtered_recyclerview_example"/>
+
+        <activity
             android:name=".advanced.RxExamplesActivity"
             android:label="@string/title_rx_recyclerview_usage_example"/>
 
