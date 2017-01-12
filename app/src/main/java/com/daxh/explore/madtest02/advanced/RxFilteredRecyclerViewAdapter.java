@@ -19,6 +19,7 @@ import rx.subscriptions.CompositeSubscription;
 
 public class RxFilteredRecyclerViewAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
+    // TODO: Add Optionals
     private ArrayList<Item> originalItems;
     private ArrayList<Item> filteredItems;
 
