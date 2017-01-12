@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
 
 import com.daxh.explore.madtest02.R;
 import com.daxh.explore.madtest02.common.Item;
@@ -15,6 +18,7 @@ public class FilteredRecyclerViewActivity extends AppCompatActivity {
 
     private RecyclerView rvItems;
     private LinearLayoutManager llmItems;
+    private EditText etKeyword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,5 +40,32 @@ public class FilteredRecyclerViewActivity extends AppCompatActivity {
 
         // Setting up adapter for RecyclerView
         rvItems.setAdapter(adapter);
+
+        etKeyword = (EditText) findViewById(R.id.etKeyword);
+        etKeyword.addTextChangedListener(new FilterTextWatcher(adapter));
+    }
+
+    public static class FilterTextWatcher implements TextWatcher {
+
+        private FilteredRecyclerViewAdapter adapter;
+
+        public FilterTextWatcher(FilteredRecyclerViewAdapter adapter) {
+            this.adapter = adapter;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            adapter.getItemFilter().filter(editable.toString());
+        }
     }
 }
