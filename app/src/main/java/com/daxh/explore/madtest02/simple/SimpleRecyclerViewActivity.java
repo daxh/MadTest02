@@ -20,7 +20,7 @@ public class SimpleRecyclerViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_classic_recyclerview_usage_example);
+        setContentView(R.layout.activity_simple_recyclerview);
 
         llmItems = new LinearLayoutManager(this);
         rvItems = (RecyclerView) findViewById(R.id.rvItems);

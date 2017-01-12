@@ -1,7 +1,14 @@
 <resources>
     <string name="app_name">MadTest02</string>
     <string name="bt_simple_recyclerview">SIMPLE RECYCLER VIEW</string>
+    <string name="bt_filtering">FILTERING</string>
+    <string name="bt_rx_recyclerview">RX RECYCLER VIEW</string>
+    <string name="bt_generic">GENERIC ADAPTER</string>
+    <string name="bt_classic_recyclerview">CLASSIC RECYCLER VIEW</string>
+    <string name="bt_headers">HEADERS</string>
     <string name="title_simple_recyclerview_usage_example">Simple Recycler View Usage Example</string>
+    <string name="title_classic_recyclerview_usage_example">Classic Recycler View Usages Examples</string>
+    <string name="title_rx_recyclerview_usage_example">RX Recycler View Usages Examples</string>
     <string name="default_item_view_text">Default item view text</string>
     <array name="lorem_ipsum">
         <item>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
