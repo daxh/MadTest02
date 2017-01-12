@@ -1,11 +1,11 @@
-package com.daxh.explore.madtest02.classic;
+package com.daxh.explore.madtest02.advanced;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.daxh.explore.madtest02.R;
 
-public class ClassicExamplesActivity extends AppCompatActivity {
+public class RxExamplesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -8,6 +8,7 @@
     <string name="bt_headers">HEADERS</string>
     <string name="title_simple_recyclerview_usage_example">Simple Recycler View Usage Example</string>
     <string name="title_classic_recyclerview_usage_example">Classic Recycler View Usages Examples</string>
+    <string name="title_rx_recyclerview_usage_example">RX Recycler View Usages Examples</string>
     <string name="default_item_view_text">Default item view text</string>
     <array name="lorem_ipsum">
         <item>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
