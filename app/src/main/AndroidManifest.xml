@@ -41,6 +41,10 @@
             android:name=".advanced.RxFilteredRecyclerViewActivity"
             android:label="@string/title_rx_filtered_recyclerview_example"/>
 
+        <activity
+            android:name=".advanced.RxSortedRecyclerViewActivity"
+            android:label="@string/title_rx_sorted_recyclerview_example"/>
+
     </application>
 
 </manifest>
