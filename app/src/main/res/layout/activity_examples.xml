@@ -19,6 +19,12 @@
         android:text="@string/bt_filtering"/>
 
     <Button
+        android:id="@+id/btSorting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/bt_sorting"/>
+
+    <Button
         android:id="@+id/btHeaders"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
