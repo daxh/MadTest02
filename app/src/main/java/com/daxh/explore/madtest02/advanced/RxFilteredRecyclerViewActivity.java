@@ -16,7 +16,7 @@ import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import java.util.ArrayList;
 
-import rx.Observable;
+import rx.functions.Func1;
 
 public class RxFilteredRecyclerViewActivity extends RxAppCompatActivity {
 
@@ -36,20 +36,17 @@ public class RxFilteredRecyclerViewActivity extends RxAppCompatActivity {
                         .map(Item::new)
                         .collect(Collectors.toCollection(ArrayList::new))).orElse(new ArrayList<>());
 
-        Optional<EditText> etKeyword = Optional.ofNullable((EditText) findViewById(R.id.etKeyword));
-        etKeyword.ifPresent(et -> {
-            Observable<String> keywordsObservable = RxTextView
-                    .afterTextChangeEvents(et)
+        // Creating adapter
+        RxFilteredRecyclerViewAdapter adapter = new RxFilteredRecyclerViewAdapter(items);
+
+        // Setting up adapter for RecyclerView
+        rvItems.ifPresent(rv -> rv.setAdapter(adapter));
+
+        Optional.ofNullable((EditText) findViewById(R.id.etKeyword))
+            .ifPresent(et -> adapter.filter(RxTextView.afterTextChangeEvents(et)
                     .compose(bindToLifecycle())
-                    .map(event -> Optional.ofNullable(event.editable())
-                            .map(Editable::toString)
-                            .orElse(""));
-
-            // Creating adapter
-            RxFilteredRecyclerViewAdapter adapter = new RxFilteredRecyclerViewAdapter(items, keywordsObservable);
-
-            // Setting up adapter for RecyclerView
-            rvItems.ifPresent(rv -> rv.setAdapter(adapter));
-        });
+                    .map(event -> (Func1<Item, Boolean>) (item) -> item.getText().contains(
+                            Optional.ofNullable(event.editable()).map(Editable::toString).orElse("")))
+            ));
     }
 }

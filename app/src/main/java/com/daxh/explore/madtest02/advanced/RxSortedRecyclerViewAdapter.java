@@ -51,7 +51,15 @@ public class RxSortedRecyclerViewAdapter extends RecyclerView.Adapter<ItemViewHo
     }
 
     public void sort(Observable<Func2<Item, Item, Integer>> observableComparator) {
-        observableComparator
+        // We using Rx to perform all sorting operations
+        // on background thread and update results on the
+        // main thread. 'debounce' operator used to throttle
+        // some ongoing events, as we don't want to have any
+        // so called 'backpressure problems'. These 2 aspects
+        // (thread switching and 'debounce') need here to
+        // replace Filter class, that was used in classic
+        // implementation.
+        Optional.ofNullable(observableComparator).ifPresent(c -> c
                 .debounce(100, TimeUnit.MILLISECONDS)
                 .subscribe(comparator -> { compositeSubscription.add(Observable.from(originalItems.get())
                         .subscribeOn(Schedulers.computation())
@@ -62,7 +70,7 @@ public class RxSortedRecyclerViewAdapter extends RecyclerView.Adapter<ItemViewHo
                             filteredItems = Optional.of(new ArrayList<>(fi));
                             notifyDataSetChanged();
                         }));
-                });
+                }));
     }
 
     @Override

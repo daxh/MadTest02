@@ -14,3 +14,6 @@ how filtering functionality could be added to RecyclerView in a classic way.
 
 3) **RxFilteredRecyclerViewActivity**, and **RxFilteredRecyclerViewAdapter** respectively, is an example of
 how filtering functionality could be added to RecyclerView in Rx-style.
+
+4) **RxSortedRecyclerViewActivity**, and **RxSortedRecyclerViewAdapter** respectively, is an example of
+how sorting functionality could be added to RecyclerView in Rx-style.
