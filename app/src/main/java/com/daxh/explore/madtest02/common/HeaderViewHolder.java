@@ -12,11 +12,11 @@ public class HeaderViewHolder extends RecyclerView.ViewHolder implements View.On
     private TextView tvText;
     private Header header;
 
-    public HeaderViewHolder(View itemView) {
-        super(itemView);
+    public HeaderViewHolder(View rootView) {
+        super(rootView);
 
-        itemView.setOnClickListener(this);
-        tvText = (TextView) itemView.findViewById(R.id.tvText);
+        rootView.setOnClickListener(this);
+        tvText = (TextView) rootView.findViewById(R.id.tvText);
     }
 
     public void bindItem(Header item) {

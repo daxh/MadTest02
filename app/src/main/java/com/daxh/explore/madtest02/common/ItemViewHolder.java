@@ -12,11 +12,11 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     private TextView tvText;
     private Item item;
 
-    public ItemViewHolder(View itemView) {
-        super(itemView);
+    public ItemViewHolder(View rootView) {
+        super(rootView);
 
-        itemView.setOnClickListener(this);
-        tvText = (TextView) itemView.findViewById(R.id.tvText);
+        rootView.setOnClickListener(this);
+        tvText = (TextView) rootView.findViewById(R.id.tvText);
     }
 
     public void bindItem(Item item) {
