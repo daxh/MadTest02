@@ -14,6 +14,7 @@ public class SimpleExamplesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simple_examples);
 
-        BindingUtils.bindButton(this, R.id.btOneViewType, () -> new Intent(this, SimpleRecyclerViewActivity.class));
+        BindingUtils.bindButton(this, R.id.btSimpleRecyclerView, () -> new Intent(this, SimpleRecyclerViewActivity.class));
+        BindingUtils.bindButton(this, R.id.btRecyclerViewWithHeaders, () -> new Intent(this, RecyclerViewWithHeadersActivity.class));
     }
 }

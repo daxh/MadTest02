@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class SimpleRecyclerViewActivity extends AppCompatActivity {
+public class RecyclerViewWithHeadersActivity extends AppCompatActivity {
 
     private RecyclerView rvItems;
     private LinearLayoutManager llmItems;
@@ -33,7 +33,7 @@ public class SimpleRecyclerViewActivity extends AppCompatActivity {
         for (String s : strings) items.add(new Item(s));
 
         // Creating adapter
-        SimpleRecyclerViewAdapter adapter = new SimpleRecyclerViewAdapter(items);
+        RecyclerViewWithHeadersAdapter adapter = new RecyclerViewWithHeadersAdapter(items);
 
         // Setting up adapter for RecyclerView
         rvItems.setAdapter(adapter);
