@@ -15,18 +15,18 @@ import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
+import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-public class RxFilteredRecyclerViewAdapter extends RecyclerView.Adapter<ItemViewHolder> {
+public class RxSortedRecyclerViewAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
     private Optional<ArrayList<Item>> originalItems;
     private Optional<ArrayList<Item>> filteredItems;
 
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
-    public RxFilteredRecyclerViewAdapter(ArrayList<Item> items) {
+    public RxSortedRecyclerViewAdapter(ArrayList<Item> items) {
         this.originalItems = Optional.ofNullable(items);
         this.originalItems
                 .executeIfPresent(oi -> filteredItems = Optional.of(new ArrayList<>(oi)))
@@ -50,8 +50,8 @@ public class RxFilteredRecyclerViewAdapter extends RecyclerView.Adapter<ItemView
         return filteredItems.mapToInt(ArrayList::size).orElse(0);
     }
 
-    public void filter(Observable<Func1<Item, Boolean>> observableFilter) {
-        // We using Rx to perform all filtering operations
+    public void sort(Observable<Func2<Item, Item, Integer>> observableComparator) {
+        // We using Rx to perform all sorting operations
         // on background thread and update results on the
         // main thread. 'debounce' operator used to throttle
         // some ongoing events, as we don't want to have any
@@ -59,12 +59,11 @@ public class RxFilteredRecyclerViewAdapter extends RecyclerView.Adapter<ItemView
         // (thread switching and 'debounce') need here to
         // replace Filter class, that was used in classic
         // implementation.
-        Optional.ofNullable(observableFilter).ifPresent(f -> f
+        Optional.ofNullable(observableComparator).ifPresent(c -> c
                 .debounce(100, TimeUnit.MILLISECONDS)
-                .subscribe(filter -> { compositeSubscription.add(Observable.from(originalItems.get())
+                .subscribe(comparator -> { compositeSubscription.add(Observable.from(originalItems.get())
                         .subscribeOn(Schedulers.computation())
-                        .filter(filter)
-                        .toList()
+                        .toSortedList(comparator)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(fi -> {
                             filteredItems.ifPresent(ArrayList::clear);

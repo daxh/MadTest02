@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">MadTest02</string>
     <string name="bt_simple_recyclerview">SIMPLE RECYCLER VIEW</string>
+    <string name="bt_sorting">SORTING</string>
+    <string name="bt_sorting_off">OFF</string>
+    <string name="bt_sort_by_length">1&lt;2&lt;3</string>
+    <string name="bt_sort_by_order">a&gt;b&gt;c</string>
     <string name="bt_filtering">FILTERING</string>
     <string name="bt_rx_recyclerview">RX RECYCLER VIEW</string>
     <string name="bt_generic">GENERIC ADAPTER</string>
@@ -9,7 +13,9 @@
     <string name="title_simple_recyclerview_usage_example">Simple Recycler View Usage Example</string>
     <string name="title_classic_recyclerview_usage_example">Classic Recycler View Usages Examples</string>
     <string name="title_filtered_recyclerview_example">Filtered Recycler View Example</string>
+    <string name="title_sorted_recyclerview_example">Sorted Recycler View Example</string>
     <string name="title_rx_filtered_recyclerview_example">Rx Filtered Recycler View Example</string>
+    <string name="title_rx_sorted_recyclerview_example">Rx Sorted Recycler View Example</string>
     <string name="title_rx_recyclerview_usage_example">Rx Recycler View Usages Examples</string>
     <string name="default_item_view_text">Default item view text</string>
     <string name="filter_by">Filter by…</string>
