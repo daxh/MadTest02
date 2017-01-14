@@ -13,21 +13,27 @@
     tools:context="com.daxh.explore.madtest02.activities.MainActivity">
 
     <Button
-        android:id="@+id/btSimpleRecycleView"
+        android:id="@+id/btFiltering"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/bt_simple_recyclerview"/>
+        android:text="@string/bt_filtering"/>
 
     <Button
-        android:id="@+id/btClassicRecycleView"
+        android:id="@+id/btSorting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/bt_classic_recyclerview"/>
+        android:text="@string/bt_sorting"/>
 
     <Button
-        android:id="@+id/btRxRecycleView"
+        android:id="@+id/btHeaders"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/bt_rx_recyclerview"/>
+        android:text="@string/bt_headers"/>
+
+    <Button
+        android:id="@+id/btGeneric"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/bt_generic"/>
 
 </LinearLayout>

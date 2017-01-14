@@ -7,26 +7,26 @@ import android.widget.Toast;
 
 import com.daxh.explore.madtest02.R;
 
-public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+public class HeaderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
     private TextView tvText;
-    private Item item;
+    private Header header;
 
-    public ItemViewHolder(View rootView) {
+    public HeaderViewHolder(View rootView) {
         super(rootView);
 
         rootView.setOnClickListener(this);
         tvText = (TextView) rootView.findViewById(R.id.tvText);
     }
 
-    public void bindItem(Item item) {
-        this.item = item;
+    public void bindItem(Header item) {
+        this.header = item;
 
-        tvText.setText(this.item.getText());
+        tvText.setText(this.header.getText());
     }
 
     @Override
     public void onClick(View view) {
-        Toast.makeText(view.getContext(), item.getText() + " clicked!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(view.getContext(), header.getText() + " clicked!", Toast.LENGTH_SHORT).show();
     }
 }

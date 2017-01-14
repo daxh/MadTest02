@@ -18,8 +18,41 @@
         </activity>
 
         <activity
+            android:name=".simple.SimpleExamplesActivity"
+            android:label="@string/title_simple_recyclerview_usages_examples"/>
+
+        <activity
             android:name=".simple.SimpleRecyclerViewActivity"
-            android:label="@string/title_simple_recyclerview_usage_example"/>
+            android:label="@string/title_simple_recyclerview"/>
+
+        <activity
+            android:name=".simple.RecyclerViewWithHeadersActivity"
+            android:label="@string/title_recyclerview_with_headers"/>
+
+        <activity
+            android:name=".classic.ClassicExamplesActivity"
+            android:label="@string/title_classic_recyclerview_usages_examples"/>
+
+        <activity
+            android:name=".classic.FilteredRecyclerViewActivity"
+            android:label="@string/title_filtered_recyclerview_example"/>
+
+        <activity
+            android:name=".classic.SortedRecyclerViewActivity"
+            android:label="@string/title_sorted_recyclerview_example"/>
+
+        <activity
+            android:name=".advanced.RxExamplesActivity"
+            android:label="@string/title_rx_recyclerview_usages_examples"/>
+
+        <activity
+            android:name=".advanced.RxFilteredRecyclerViewActivity"
+            android:label="@string/title_rx_filtered_recyclerview_example"/>
+
+        <activity
+            android:name=".advanced.RxSortedRecyclerViewActivity"
+            android:label="@string/title_rx_sorted_recyclerview_example"/>
+
     </application>
 
 </manifest>
