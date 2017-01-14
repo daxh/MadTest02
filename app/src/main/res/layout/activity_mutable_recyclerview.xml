@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/card_inner_offset_h"
+        android:layout_marginStart="@dimen/card_inner_offset_h"
+        android:layout_marginRight="@dimen/card_inner_offset_h"
+        android:layout_marginEnd="@dimen/card_inner_offset_h"
+        android:layout_marginTop="@dimen/card_inner_offset_v"
+        android:layout_marginBottom="@dimen/card_inner_offset_v"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/Base.TextAppearance.AppCompat.Light.Widget.PopupMenu.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/mutable_recyclerview_instructions"
+            />
+
+        <EditText
+            android:id="@+id/etCommand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_command"
+            />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvItems"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"/>
+
+</LinearLayout>

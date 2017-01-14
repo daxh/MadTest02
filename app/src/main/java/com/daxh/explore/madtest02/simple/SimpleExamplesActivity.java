@@ -16,5 +16,6 @@ public class SimpleExamplesActivity extends AppCompatActivity {
 
         BindingUtils.bindButton(this, R.id.btSimpleRecyclerView, () -> new Intent(this, SimpleRecyclerViewActivity.class));
         BindingUtils.bindButton(this, R.id.btRecyclerViewWithHeaders, () -> new Intent(this, RecyclerViewWithHeadersActivity.class));
+        BindingUtils.bindButton(this, R.id.btMutableRecyclerView, () -> new Intent(this, MutableRecyclerViewActivity.class));
     }
 }
