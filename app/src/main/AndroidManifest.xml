@@ -46,6 +46,10 @@
             android:label="@string/title_sorted_recyclerview_example"/>
 
         <activity
+            android:name=".classic.InfiniteRecyclerViewActivity"
+            android:label="@string/title_infinite_recyclerview_example"/>
+
+        <activity
             android:name=".advanced.RxExamplesActivity"
             android:label="@string/title_rx_recyclerview_usages_examples"/>
 
