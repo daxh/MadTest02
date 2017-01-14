@@ -4,16 +4,20 @@ This is a try to implement such common task as displaying a collection of items 
 using Rx with additional goodies such as few itemView types, infinite scrolling, unified and easy
 management.
 
-1) I am starting from a simple implementation of RecyclerView with basic support for clicks because in
-this simple case there is no place to use Rx, as I believe. It will be a good starting point for further
-explorations and comparisons. Also, obviously some of classes created here will be reused on the next
-stages.
+1) I am starting from a **simple implementation** of RecyclerView with basic support for clicks because
+in this simple case there is no place to use Rx, as I believe. It will be a good starting point for
+further explorations and comparisons. Also, obviously some classes created here will be reused on
+the next stages.
 
-2) **FilteredRecyclerViewActivity**, and **FilteredRecyclerViewAdapter** respectively, is an example of
+2) Then implementation of **RecyclerView with headers** added. As the case above, this could be used
+for further explorations and comparisons, some classes created here will be reused on latest stages,
+when we will build our uber-adapter.
+
+3) **FilteredRecyclerViewActivity**, and **FilteredRecyclerViewAdapter** respectively, is an example of
 how filtering functionality could be added to RecyclerView in a classic way.
 
-3) **RxFilteredRecyclerViewActivity**, and **RxFilteredRecyclerViewAdapter** respectively, is an example of
+4) **RxFilteredRecyclerViewActivity**, and **RxFilteredRecyclerViewAdapter** respectively, is an example of
 how filtering functionality could be added to RecyclerView in Rx-style.
 
-4) **RxSortedRecyclerViewActivity**, and **RxSortedRecyclerViewAdapter** respectively, is an example of
+5) **RxSortedRecyclerViewActivity**, and **RxSortedRecyclerViewAdapter** respectively, is an example of
 how sorting functionality could be added to RecyclerView in Rx-style.
