@@ -25,7 +25,8 @@
     <string name="default_item_view_text">Default item view text</string>
     <string name="filter_by">Filter by…</string>
     <string name="enter_command">Enter command...</string>
-    <string name="mutable_recyclerview_instructions">Use the following commands to mutate recyclerView data</string>
+    <string name="mutable_recyclerview_instructions">Use the following commands to mutate recyclerView data:
+    \'a text\', \'i text 2\', \'r text 2\', \'m 2 3\', \'d 2\'</string>
     <array name="lorem_ipsum">
         <item>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
             ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco

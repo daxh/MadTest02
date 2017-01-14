@@ -35,4 +35,39 @@ public class MutableRecyclerViewAdapter extends RecyclerView.Adapter<ItemViewHol
     public int getItemCount() {
         return items == null ? 0 : items.size();
     }
+
+    public void add(Item item){
+        items.add(item);
+
+        notifyItemInserted(items.indexOf(item));
+    }
+
+    public void insert(Item item, int position){
+        if (position <= items.size()) {
+            items.add(position, item);
+            notifyItemInserted(position);
+        }
+    }
+
+    public void replace(Item item, int position){
+        if (position <= items.size()) {
+            items.set(position, item);
+
+            notifyItemChanged(position);
+        }
+    }
+
+    public void move(int startPos, int endPos) {
+        Item item = items.get(startPos);
+        items.remove(startPos);
+        items.add(endPos, item);
+
+        notifyItemMoved(startPos, endPos);
+    }
+
+    public void remove(int position) {
+        items.remove(position);
+
+        notifyItemRemoved(position);
+    }
 }
