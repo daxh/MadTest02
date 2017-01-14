@@ -7,6 +7,7 @@
     <string name="bt_sort_by_order">a&gt;b&gt;c</string>
     <string name="bt_filtering">FILTERING</string>
     <string name="bt_recyclerview_with_headers">RECYCLERVIEW WITH HEADERS</string>
+    <string name="bt_mutable_recyclerview">MUTABLE RECYCLERVIEW</string>
     <string name="bt_rx_recyclerview">RX RECYCLER VIEW</string>
     <string name="bt_generic">GENERIC ADAPTER</string>
     <string name="bt_classic_recyclerview">CLASSIC RECYCLER VIEW</string>
@@ -14,6 +15,7 @@
     <string name="title_simple_recyclerview_usages_examples">Simple Recycler View Usages Examples</string>
     <string name="title_simple_recyclerview">Simple Recycler View</string>
     <string name="title_recyclerview_with_headers">Recycler View With Headers</string>
+    <string name="title_mutable_recycler_view">Mutable Recycler View</string>
     <string name="title_classic_recyclerview_usages_examples">Classic Recycler View Usages Examples</string>
     <string name="title_filtered_recyclerview_example">Filtered Recycler View Example</string>
     <string name="title_sorted_recyclerview_example">Sorted Recycler View Example</string>
@@ -22,6 +24,9 @@
     <string name="title_rx_sorted_recyclerview_example">Rx Sorted Recycler View Example</string>
     <string name="default_item_view_text">Default item view text</string>
     <string name="filter_by">Filter by…</string>
+    <string name="enter_command">Enter command...</string>
+    <string name="mutable_recyclerview_instructions">Use the following commands to mutate recyclerView data:
+    \'a text\', \'i text 2\', \'r text 2\', \'m 2 3\', \'d 2\'</string>
     <array name="lorem_ipsum">
         <item>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
             ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco

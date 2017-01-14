@@ -30,6 +30,10 @@
             android:label="@string/title_recyclerview_with_headers"/>
 
         <activity
+            android:name=".simple.MutableRecyclerViewActivity"
+            android:label="@string/title_mutable_recycler_view"/>
+
+        <activity
             android:name=".classic.ClassicExamplesActivity"
             android:label="@string/title_classic_recyclerview_usages_examples"/>
 
