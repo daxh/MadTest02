@@ -21,6 +21,16 @@ public class RecyclerViewWithHeadersAdapter extends RecyclerView.Adapter<Recycle
     private static final int TYPE_HEADER    = 0x0001;
     private static final int TYPE_ITEM      = 0x0002;
 
+    // Why we need this LinkedHashMap? Why
+    // we couldn't use simple ArrayList? In
+    // this particular case there are no any
+    // real benefits. But in future, when we
+    // will extend this example, this approach
+    // will helps us to easily add filtering,
+    // sorting (for items, or for headers)
+    // and so on. So I believe that it is better
+    // to keep all data structure and items
+    // inter-dependencies directly.
     private LinkedHashMap<Header, ArrayList<Item>> dataset;
 
     private ArrayList<Object> items;
@@ -75,9 +85,9 @@ public class RecyclerViewWithHeadersAdapter extends RecyclerView.Adapter<Recycle
     // According to official documentation:
     // https://developer.android.com/reference/android/widget/Filter.html
     // This class allows to execute filtering operations
-    // asynchronously and properly cancel that iterations
-    // that became un-relevant. Obviously, we using it here,
-    // but for flatting original dataset to items list that
+    // asynchronously and properly cancel iterations that
+    // became un-relevant. Obviously, we using it here, but
+    // for flatting original dataset to items list that
     // could be easily displayed. Probably there is a more
     // true way to do it, but right now I didn't know it.
     public class ItemFilter extends Filter {

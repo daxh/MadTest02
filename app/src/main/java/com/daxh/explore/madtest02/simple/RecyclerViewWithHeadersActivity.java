@@ -31,6 +31,17 @@ public class RecyclerViewWithHeadersActivity extends AppCompatActivity {
         // Preparing data
         String [] dataArray = getResources().getStringArray(R.array.lorem_ipsum);
         ArrayList<String> strings = new ArrayList<>(Arrays.asList(dataArray[0].split(" ")));
+
+        // Why we need this LinkedHashMap? Why
+        // we couldn't use simple ArrayList? In
+        // this particular case there are no any
+        // real benefits. But in future, when we
+        // will extend this example, this approach
+        // will helps us to easily add filtering,
+        // sorting (for items, or for headers)
+        // and so on. So I believe that it is better
+        // to keep all data structure and items
+        // inter-dependencies directly.
         LinkedHashMap<Header, ArrayList<Item>> dataset = new LinkedHashMap<>();
         final int step = 5;
         for (int i = 0; i < strings.size();) {
