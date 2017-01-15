@@ -33,6 +33,10 @@ public class InfiniteRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     private OnScrollListener onScrollListener;
     private DataObserver dataObserver;
 
+    private LinearLayoutManager llm;
+
+    private Handler handler = new Handler();
+
     public InfiniteRecyclerViewAdapter(ArrayList<Object> items, Listener listener) {
         this.originalItems = items;
         this.listener = listener;
@@ -67,7 +71,7 @@ public class InfiniteRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             // item removed animation (when hiding
             // progress item)
 
-            new Handler().postDelayed(new Runnable() {
+            handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     int pos = originalItems.indexOf(progress);
@@ -78,7 +82,7 @@ public class InfiniteRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                     progress = null;
                     isProgressShown = false;
                 }
-            }, 50);
+            }, 0);
         }
     }
 
@@ -89,6 +93,20 @@ public class InfiniteRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     public int getOriginalItemCount() {
         return originalItems == null ? 0 : isProgressShown ? originalItems.size()-1 : originalItems.size();
+    }
+
+    public boolean isPlaceForMoreDataAvailable() {
+        if (llm != null) {
+            int first = llm.findFirstCompletelyVisibleItemPosition();
+            int last = llm.findLastCompletelyVisibleItemPosition();
+
+            if (first == 0 && ((!isProgressShown && last == getItemCount()-1) ||
+                    (isProgressShown && last == getOriginalItemCount()))){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
@@ -133,6 +151,13 @@ public class InfiniteRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         super.onAttachedToRecyclerView(recyclerView);
         recyclerView.addOnScrollListener(onScrollListener);
         registerAdapterDataObserver(dataObserver);
+
+        if (llm == null) {
+            try{
+                llm = (LinearLayoutManager) recyclerView.getLayoutManager();
+            } catch (ClassCastException ignored) {
+            }
+        }
     }
 
     @Override
@@ -140,6 +165,8 @@ public class InfiniteRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         super.onDetachedFromRecyclerView(recyclerView);
         recyclerView.removeOnScrollListener(onScrollListener);
         unregisterAdapterDataObserver(dataObserver);
+
+        llm = null;
     }
 
     // According to official documentation:
@@ -184,6 +211,8 @@ public class InfiniteRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     public interface Listener {
         void onNeedMoreData(InfiniteRecyclerViewAdapter adapter);
 
+        void onPlaceForMoreDataAvailable(InfiniteRecyclerViewAdapter adapter);
+
         void onDataInserted(InfiniteRecyclerViewAdapter adapter);
     }
 
@@ -199,7 +228,21 @@ public class InfiniteRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         public void onItemRangeInserted(int positionStart, int itemCount) {
             super.onItemRangeInserted(positionStart, itemCount);
             if (adapter.getListener() != null) {
-                adapter.getListener().onDataInserted(adapter);
+
+                // This dirty trick allows us to show
+                // recyclerView animations in a right
+                // order
+
+                adapter.handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (adapter.isPlaceForMoreDataAvailable()) {
+                            adapter.getListener().onPlaceForMoreDataAvailable(adapter);
+                        }
+
+                        adapter.getListener().onDataInserted(adapter);
+                    }
+                }, 0);
             }
         }
     }

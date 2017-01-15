@@ -48,45 +48,58 @@ public class InfiniteRecyclerViewActivity extends AppCompatActivity {
         rvItems.setAdapter(adapter);
     }
 
+    private void asyncLoadNextPage(final InfiniteRecyclerViewAdapter adapter) {
+        // This is just a dirty example of long
+        // running longRunningTask. Obviously we shouldn't
+        // do such things in production code.
+        if (longRunningTask != null &&
+                longRunningTask.getStatus() != AsyncTask.Status.FINISHED) {
+            return;
+        }
+
+        longRunningTask = new AsyncTask<Object, Object, ArrayList<Object>>() {
+
+            @Override
+            protected void onPreExecute() {
+                adapter.showProgress(true);
+            }
+
+            @Override
+            protected ArrayList<Object> doInBackground(Object... voids) {
+                SystemClock.sleep(4000);
+                return pages.size() > 0 ? pages.removeFirst() : null;
+            }
+
+            @Override
+            protected void onPostExecute(ArrayList<Object> objects) {
+                if (objects != null && objects.size() > 0) {
+                    adapter.addAll(objects);
+                }
+                else {
+                    adapter.showProgress(false);
+                }
+            }
+        };
+        longRunningTask.execute();
+    }
+
     public class InfiniteScrollingListener implements InfiniteRecyclerViewAdapter.Listener {
         @Override
         public void onNeedMoreData(InfiniteRecyclerViewAdapter adapter) {
-            // This is just a dirty example of long
-            // running longRunningTask. Obviously we shouldn't
-            // do such things in production code.
-            if (longRunningTask != null &&
-                    longRunningTask.getStatus() != AsyncTask.Status.FINISHED) {
-                return;
-            }
+            asyncLoadNextPage(adapter);
+        }
 
-            longRunningTask = new AsyncTask<Object, Object, ArrayList<Object>>() {
-
-                @Override
-                protected void onPreExecute() {
-                    adapter.showProgress(true);
-                }
-
-                @Override
-                protected ArrayList<Object> doInBackground(Object... voids) {
-                    SystemClock.sleep(4000);
-                    return pages.size() > 0 ? pages.removeFirst() : null;
-                }
-
-                @Override
-                protected void onPostExecute(ArrayList<Object> objects) {
-                    if (objects != null && objects.size() > 0) {
-                        adapter.addAll(objects);
-                    }
-                    else {
-                        adapter.showProgress(false);
-                    }
-                }
-            };
-            longRunningTask.execute();
+        @Override
+        public void onPlaceForMoreDataAvailable(InfiniteRecyclerViewAdapter adapter) {
+            asyncLoadNextPage(adapter);
         }
 
         @Override
         public void onDataInserted(InfiniteRecyclerViewAdapter adapter) {
+            if (longRunningTask != null &&
+                    longRunningTask.getStatus() != AsyncTask.Status.FINISHED) {
+                return;
+            }
             adapter.showProgress(false);
         }
     }
