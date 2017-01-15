@@ -4,6 +4,9 @@ apply plugin: 'com.android.application'
 // Applying plugin
 apply plugin: 'me.tatarka.retrolambda'
 
+// Hugo Logger
+apply plugin: 'com.jakewharton.hugo'
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
