@@ -13,10 +13,8 @@ import com.daxh.explore.madtest02.common.Item;
 import com.daxh.explore.madtest02.common.ItemViewHolder;
 import com.daxh.explore.madtest02.common.Progress;
 import com.daxh.explore.madtest02.common.ProgressViewHolder;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class InfiniteRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -53,33 +51,35 @@ public class InfiniteRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     public void showProgress(boolean show) {
-        // This dirty trick allows us to show
-        // recyclerView animations in a right
-        // order: one after one, items inserted
-        // animation (when adding new items),
-        // item removed animation (when hiding
-        // progress item)
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (show && !isProgressShown) {
-                    isProgressShown = true;
-                    progress = new Progress();
-                    originalItems.add(progress);
-                    unregisterAdapterDataObserver(dataObserver);
-                    notifyItemInserted(originalItems.indexOf(progress));
-                    registerAdapterDataObserver(dataObserver);
-                } else if(!show && isProgressShown) {
+        if (show && !isProgressShown) {
+            isProgressShown = true;
+            progress = new Progress();
+            originalItems.add(progress);
+            unregisterAdapterDataObserver(dataObserver);
+                notifyItemInserted(originalItems.indexOf(progress));
+            registerAdapterDataObserver(dataObserver);
+        } else if(!show && isProgressShown) {
+
+            // This dirty trick allows us to show
+            // recyclerView animations in a right
+            // order: one after one, items inserted
+            // animation (when adding new items),
+            // item removed animation (when hiding
+            // progress item)
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
                     int pos = originalItems.indexOf(progress);
                     originalItems.remove(progress);
                     unregisterAdapterDataObserver(dataObserver);
-                    notifyItemRemoved(pos);
+                        notifyItemRemoved(pos);
                     registerAdapterDataObserver(dataObserver);
                     progress = null;
                     isProgressShown = false;
                 }
-            }
-        }, 0);
+            }, 50);
+        }
     }
 
     public void addAll(ArrayList<Object> items){
@@ -214,7 +214,6 @@ public class InfiniteRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-
         }
 
         @Override
