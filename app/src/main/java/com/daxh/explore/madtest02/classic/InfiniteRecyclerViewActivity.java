@@ -20,6 +20,7 @@ public class InfiniteRecyclerViewActivity extends AppCompatActivity {
     private RecyclerView rvItems;
     private LinearLayoutManager llmItems;
     private LinkedList<ArrayList<Object>> pages;
+    private AsyncTask<Object, Object, ArrayList<Object>> longRunningTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +52,14 @@ public class InfiniteRecyclerViewActivity extends AppCompatActivity {
         @Override
         public void onNeedMoreData(InfiniteRecyclerViewAdapter adapter) {
             // This is just a dirty example of long
-            // running task. Obviously we shouldn't
+            // running longRunningTask. Obviously we shouldn't
             // do such things in production code.
-            if (adapter.isProgressShown()) {
+            if (longRunningTask != null &&
+                    longRunningTask.getStatus() != AsyncTask.Status.FINISHED) {
                 return;
             }
 
-            AsyncTask<Object, Object, ArrayList<Object>> task = new AsyncTask<Object, Object, ArrayList<Object>>() {
+            longRunningTask = new AsyncTask<Object, Object, ArrayList<Object>>() {
 
                 @Override
                 protected void onPreExecute() {
@@ -80,7 +82,7 @@ public class InfiniteRecyclerViewActivity extends AppCompatActivity {
                     }
                 }
             };
-            task.execute();
+            longRunningTask.execute();
         }
 
         @Override
