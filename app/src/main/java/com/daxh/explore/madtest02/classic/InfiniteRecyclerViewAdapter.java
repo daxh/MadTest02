@@ -1,5 +1,7 @@
 package com.daxh.explore.madtest02.classic;
 
+import android.os.Handler;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +13,10 @@ import com.daxh.explore.madtest02.common.Item;
 import com.daxh.explore.madtest02.common.ItemViewHolder;
 import com.daxh.explore.madtest02.common.Progress;
 import com.daxh.explore.madtest02.common.ProgressViewHolder;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class InfiniteRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -25,12 +29,23 @@ public class InfiniteRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     private ItemFilter itemFilter;
 
     private boolean isProgressShown = false;
-
     private Progress progress;
-    public InfiniteRecyclerViewAdapter(ArrayList<Object> items) {
+
+    private Listener listener;
+    private OnScrollListener onScrollListener;
+    private DataObserver dataObserver;
+
+    public InfiniteRecyclerViewAdapter(ArrayList<Object> items, Listener listener) {
         this.originalItems = items;
+        this.listener = listener;
 
         itemFilter = new ItemFilter();
+        onScrollListener = new OnScrollListener();
+        dataObserver = new DataObserver(this);
+    }
+
+    public Listener getListener() {
+        return listener;
     }
 
     public boolean isProgressShown() {
@@ -38,23 +53,42 @@ public class InfiniteRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     public void showProgress(boolean show) {
-        if (show && !isProgressShown) {
-            isProgressShown = true;
-            progress = new Progress();
-            originalItems.add(progress);
-            notifyItemInserted(originalItems.indexOf(progress));
-        } else if(!show && isProgressShown) {
-            int pos = originalItems.indexOf(progress);
-            originalItems.remove(progress);
-            notifyItemRemoved(pos);
-            progress = null;
-            isProgressShown = false;
-        }
+        // This dirty trick allows us to show
+        // recyclerView animations in a right
+        // order: one after one, items inserted
+        // animation (when adding new items),
+        // item removed animation (when hiding
+        // progress item)
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (show && !isProgressShown) {
+                    isProgressShown = true;
+                    progress = new Progress();
+                    originalItems.add(progress);
+                    unregisterAdapterDataObserver(dataObserver);
+                    notifyItemInserted(originalItems.indexOf(progress));
+                    registerAdapterDataObserver(dataObserver);
+                } else if(!show && isProgressShown) {
+                    int pos = originalItems.indexOf(progress);
+                    originalItems.remove(progress);
+                    unregisterAdapterDataObserver(dataObserver);
+                    notifyItemRemoved(pos);
+                    registerAdapterDataObserver(dataObserver);
+                    progress = null;
+                    isProgressShown = false;
+                }
+            }
+        }, 0);
     }
 
     public void addAll(ArrayList<Object> items){
         attachedItems = items;
         itemFilter.filter("");
+    }
+
+    public int getOriginalItemCount() {
+        return originalItems == null ? 0 : isProgressShown ? originalItems.size()-1 : originalItems.size();
     }
 
     @Override
@@ -94,6 +128,20 @@ public class InfiniteRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        recyclerView.addOnScrollListener(onScrollListener);
+        registerAdapterDataObserver(dataObserver);
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        recyclerView.removeOnScrollListener(onScrollListener);
+        unregisterAdapterDataObserver(dataObserver);
+    }
+
     // According to official documentation:
     // https://developer.android.com/reference/android/widget/Filter.html
     // This class allows to execute filtering operations
@@ -105,14 +153,16 @@ public class InfiniteRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     public class ItemFilter extends Filter {
 
         private int startPos;
+        private int insertionsNum;
 
         @Override
         protected FilterResults performFiltering(CharSequence keyword) {
             FilterResults results = new FilterResults();
             final ArrayList<Object> tmpItemsList = new ArrayList<>(originalItems);
 
-            tmpItemsList.addAll(attachedItems);
-            startPos = originalItems.size()-(isProgressShown ? 2 : 1);
+            startPos = originalItems.size()-(isProgressShown ? 1 : 0);
+            insertionsNum = attachedItems.size();
+            tmpItemsList.addAll(startPos, attachedItems);
 
             attachedItems.clear();
             attachedItems = null;
@@ -125,8 +175,87 @@ public class InfiniteRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            originalItems.clear();
             originalItems = (ArrayList<Object>) filterResults.values;
-            notifyItemRangeInserted(startPos, originalItems.size());
+            notifyItemRangeInserted(startPos, insertionsNum);
+        }
+    }
+
+    public interface Listener {
+        void onNeedMoreData(InfiniteRecyclerViewAdapter adapter);
+
+        void onDataInserted(InfiniteRecyclerViewAdapter adapter);
+    }
+
+    public static class DataObserver extends RecyclerView.AdapterDataObserver {
+
+        private InfiniteRecyclerViewAdapter adapter;
+
+        public DataObserver(InfiniteRecyclerViewAdapter adapter) {
+            this.adapter = adapter;
+        }
+
+        @Override
+        public void onItemRangeInserted(int positionStart, int itemCount) {
+            super.onItemRangeInserted(positionStart, itemCount);
+            if (adapter.getListener() != null) {
+                adapter.getListener().onDataInserted(adapter);
+            }
+        }
+    }
+
+    public static class OnScrollListener extends RecyclerView.OnScrollListener {
+
+        private int offset = 3;
+        private LinearLayoutManager llm;
+        private InfiniteRecyclerViewAdapter adapter;
+
+        private boolean notify = true;
+
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            if (adapter == null || llm == null) {
+                try{
+                    adapter = (InfiniteRecyclerViewAdapter) recyclerView.getAdapter();
+                    llm = (LinearLayoutManager) recyclerView.getLayoutManager();
+                } catch (ClassCastException e) {
+                    return;
+                }
+            }
+
+            if (llm.findLastCompletelyVisibleItemPosition() >= adapter.getOriginalItemCount()-offset && notify){
+                notify = false;
+
+                /*
+                 *  We need this handler due to the following problem:
+                 *  Cannot call this method in a scroll callback. Scroll callbacks
+                 *  might be run during a measure & layout pass where you cannot
+                 *  change the RecyclerView data. Any method call that might change
+                 *  the structure of the RecyclerView or the adapter contents should
+                 *  be postponed to the next frame.
+                 *
+                 *  Solution described here:
+                 *
+                 *  http://stackoverflow.com/questions/39445330/cannot-call-notifyiteminserted-method-in-a-scroll-callback-recyclerview-v724-2
+                 */
+                recyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (adapter.getListener() != null) {
+                            adapter.getListener().onNeedMoreData(adapter);
+                        }
+                    }
+                });
+            }
+
+            if (llm.findLastCompletelyVisibleItemPosition() < adapter.getOriginalItemCount()-offset && !notify){
+                notify = true;
+            }
         }
     }
 }
