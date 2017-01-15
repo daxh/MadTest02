@@ -3,6 +3,9 @@
     <string name="bt_simple_recyclerview">SIMPLE RECYCLER VIEW</string>
     <string name="bt_sorting">SORTING</string>
     <string name="bt_sorting_off">OFF</string>
+    <string name="bt_large">LARGE</string>
+    <string name="bt_medium">MEDIUM</string>
+    <string name="bt_small">SMALL</string>
     <string name="bt_sort_by_length">1&lt;2&lt;3</string>
     <string name="bt_sort_by_order">a&gt;b&gt;c</string>
     <string name="bt_filtering">FILTERING</string>
@@ -79,29 +82,22 @@
             pleasures, or else he endures pains to avoid worse pains.</item>
     </array>
 
-    <!--<array name="lorem_ipsum">-->
-        <!--<item>1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20</item>-->
-        <!--<item>1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20</item>-->
-        <!--<item>1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20</item>-->
-        <!--<item>1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20</item>-->
-        <!--<item>1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20</item>-->
-    <!--</array>-->
+    <array name="medium">
+        <item>Lorem ipsum dolor sit amet</item>
+        <item>Sed ut perspiciatis unde omnis</item>
+        <item>But I must explain to</item>
+        <item>At vero eos et accusamus</item>
+        <item>On the other hand, we</item>
+    </array>
 
-    <!--<array name="lorem_ipsum">-->
-        <!--<item>1 2 3 4 5</item>-->
-        <!--<item>1 2 3 4 5</item>-->
-        <!--<item>1 2 3 4 5</item>-->
-        <!--<item>1 2 3 4 5</item>-->
-        <!--<item>1 2 3 4 5</item>-->
-    <!--</array>-->
+    <array name="small">
+        <item>Lorem ipsum</item>
+        <item>Sed ut</item>
+        <item>But I</item>
+        <item>At vero</item>
+        <item>On the</item>
+        <item>Lorem ipsum</item>
+        <item>Sed ut</item>
+    </array>
 
-    <!--<array name="lorem_ipsum">-->
-        <!--<item>1 1</item>-->
-        <!--<item>2 2</item>-->
-        <!--<item>3 3</item>-->
-        <!--<item>4 4</item>-->
-        <!--<item>5 5</item>-->
-        <!--<item>6 6</item>-->
-        <!--<item>7 7</item>-->
-    <!--</array>-->
 </resources>

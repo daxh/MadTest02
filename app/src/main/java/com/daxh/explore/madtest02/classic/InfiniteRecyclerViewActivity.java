@@ -6,6 +6,8 @@ import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
 
 import com.daxh.explore.madtest02.R;
 import com.daxh.explore.madtest02.common.Item;
@@ -16,6 +18,10 @@ import java.util.LinkedList;
 
 
 public class InfiniteRecyclerViewActivity extends AppCompatActivity {
+
+    private Button btLarge;
+    private Button btMedium;
+    private Button btSmall;
 
     private RecyclerView rvItems;
     private LinearLayoutManager llmItems;
@@ -31,8 +37,39 @@ public class InfiniteRecyclerViewActivity extends AppCompatActivity {
         rvItems = (RecyclerView) findViewById(R.id.rvItems);
         rvItems.setLayoutManager(llmItems);
 
+        btLarge = (Button) findViewById(R.id.btLarge);
+        btLarge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                parseData(R.array.lorem_ipsum);
+            }
+        });
+        btLarge.performClick();
+
+        btMedium = (Button) findViewById(R.id.btMedium);
+        btMedium.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                parseData(R.array.medium);
+            }
+        });
+
+        btSmall = (Button) findViewById(R.id.btSmall);
+        btSmall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                parseData(R.array.small);
+            }
+        });
+    }
+
+    private void parseData(int resId){
+        if (longRunningTask != null && (!longRunningTask.isCancelled() || longRunningTask.getStatus() != AsyncTask.Status.FINISHED)) {
+            longRunningTask.cancel(true);
+        }
+
         // Preparing data
-        String [] dataArray = getResources().getStringArray(R.array.lorem_ipsum);
+        String [] dataArray = getResources().getStringArray(resId);
         pages = new LinkedList<>();
         for (String data : dataArray) {
             ArrayList<String> strings = new ArrayList<>(Arrays.asList(data.split(" ")));
