@@ -270,6 +270,13 @@ public class InfiniteRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 }
             }
 
+            // Catching the case when number of
+            // elements available for scrolling
+            // is less then offset
+            final int visibleItemsNum = llm.findLastVisibleItemPosition() - llm.findFirstVisibleItemPosition();
+            if (adapter.getItemCount() - visibleItemsNum < offset)
+                offset = adapter.getItemCount() - visibleItemsNum;
+
             if (llm.findLastCompletelyVisibleItemPosition() >= adapter.getOriginalItemCount()-offset && notify){
                 notify = false;
 

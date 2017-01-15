@@ -66,7 +66,7 @@ public class InfiniteRecyclerViewActivity extends AppCompatActivity {
 
             @Override
             protected ArrayList<Object> doInBackground(Object... voids) {
-                SystemClock.sleep(4000);
+                SystemClock.sleep(2000);
                 return pages.size() > 0 ? pages.removeFirst() : null;
             }
 

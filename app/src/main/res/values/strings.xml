@@ -78,4 +78,30 @@
             these matters to this principle of selection: he rejects pleasures to secure other greater
             pleasures, or else he endures pains to avoid worse pains.</item>
     </array>
+
+    <!--<array name="lorem_ipsum">-->
+        <!--<item>1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20</item>-->
+        <!--<item>1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20</item>-->
+        <!--<item>1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20</item>-->
+        <!--<item>1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20</item>-->
+        <!--<item>1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20</item>-->
+    <!--</array>-->
+
+    <!--<array name="lorem_ipsum">-->
+        <!--<item>1 2 3 4 5</item>-->
+        <!--<item>1 2 3 4 5</item>-->
+        <!--<item>1 2 3 4 5</item>-->
+        <!--<item>1 2 3 4 5</item>-->
+        <!--<item>1 2 3 4 5</item>-->
+    <!--</array>-->
+
+    <!--<array name="lorem_ipsum">-->
+        <!--<item>1 1</item>-->
+        <!--<item>2 2</item>-->
+        <!--<item>3 3</item>-->
+        <!--<item>4 4</item>-->
+        <!--<item>5 5</item>-->
+        <!--<item>6 6</item>-->
+        <!--<item>7 7</item>-->
+    <!--</array>-->
 </resources>
