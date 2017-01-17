@@ -59,9 +59,10 @@ public class RxInfiniteRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
             isProgressShown = true;
             progress = new Progress();
             originalItems.add(progress);
-            unregisterAdapterDataObserver(dataObserver);
-                notifyItemInserted(originalItems.indexOf(progress));
-            registerAdapterDataObserver(dataObserver);
+            try { unregisterAdapterDataObserver(dataObserver); }
+                catch (IllegalStateException ignored) {}
+            notifyItemInserted(originalItems.indexOf(progress));
+            if (dataObserver != null) { registerAdapterDataObserver(dataObserver); }
         } else if(!show && isProgressShown) {
 
             // This dirty trick allows us to show
@@ -76,9 +77,12 @@ public class RxInfiniteRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
                 public void run() {
                     int pos = originalItems.indexOf(progress);
                     originalItems.remove(progress);
-                    unregisterAdapterDataObserver(dataObserver);
-                        notifyItemRemoved(pos);
-                    registerAdapterDataObserver(dataObserver);
+
+                    try { unregisterAdapterDataObserver(dataObserver); }
+                        catch (IllegalStateException ignored) {}
+                    notifyItemRemoved(pos);
+                    if (dataObserver != null) { registerAdapterDataObserver(dataObserver); }
+
                     progress = null;
                     isProgressShown = false;
                 }
