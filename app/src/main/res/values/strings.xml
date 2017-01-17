@@ -27,6 +27,7 @@
     <string name="title_rx_recyclerview_usages_examples">Rx Recycler View Usages Examples</string>
     <string name="title_rx_filtered_recyclerview_example">Rx Filtered Recycler View Example</string>
     <string name="title_rx_sorted_recyclerview_example">Rx Sorted Recycler View Example</string>
+    <string name="title_rx_infinite_recyclerview_example">Rx Infinite Recycler View Example</string>
     <string name="default_item_view_text">Default item view text</string>
     <string name="filter_by">Filter by…</string>
     <string name="enter_command">Enter command...</string>

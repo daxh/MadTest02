@@ -61,6 +61,10 @@
             android:name=".advanced.RxSortedRecyclerViewActivity"
             android:label="@string/title_rx_sorted_recyclerview_example"/>
 
+        <activity
+            android:name=".advanced.RxInfiniteRecyclerViewActivity"
+            android:label="@string/title_rx_sorted_recyclerview_example"/>
+
     </application>
 
 </manifest>
