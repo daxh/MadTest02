@@ -1,6 +1,7 @@
 package com.daxh.explore.madtest02.advanced;
 
 import android.os.Handler;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,7 +19,10 @@ import com.jakewharton.rxbinding.support.v7.widget.RxRecyclerView;
 
 import java.util.ArrayList;
 
+import rx.Observable;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class RxInfiniteRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -26,9 +30,6 @@ public class RxInfiniteRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
     private static final int TYPE_ITEM      = 0x0002;
 
     private ArrayList<Object> originalItems;
-
-    private ArrayList<Object> attachedItems;
-    private ItemFilter itemFilter;
 
     private boolean isProgressShown = false;
     private Progress progress;
@@ -49,7 +50,6 @@ public class RxInfiniteRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
         this.originalItems = items;
         this.listener = listener;
 
-        itemFilter = new ItemFilter();
         dataObserver = new DataObserver(this);
     }
 
@@ -87,8 +87,17 @@ public class RxInfiniteRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
     }
 
     public void addAll(ArrayList<Object> items){
-        attachedItems = items;
-        itemFilter.filter("");
+        Observable.fromCallable(() -> {
+            int startPos = originalItems.size() - (isProgressShown ? 1 : 0);
+            int insertionNum = items.size();
+            originalItems.addAll(startPos, items);
+            return new Pair<>(startPos, insertionNum);
+        })
+        .subscribeOn(Schedulers.computation())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(pair -> {
+            notifyItemRangeInserted(pair.first, pair.second);
+        });
     }
 
     public int getOriginalItemCount() {
@@ -206,45 +215,6 @@ public class RxInfiniteRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
 
         if (llm.findLastCompletelyVisibleItemPosition() < getOriginalItemCount()-offset && !notify){
             notify = true;
-        }
-    }
-
-    // According to official documentation:
-    // https://developer.android.com/reference/android/widget/Filter.html
-    // This class allows to execute filtering operations
-    // asynchronously and properly cancel iterations that
-    // became un-relevant. Obviously, we using it here, but
-    // for appending new data to original dataset. Probably
-    // there is a more true way to do it, but right now I
-    // didn't know it.
-    public class ItemFilter extends Filter {
-
-        private int startPos;
-        private int insertionsNum;
-
-        @Override
-        protected FilterResults performFiltering(CharSequence keyword) {
-            FilterResults results = new FilterResults();
-            final ArrayList<Object> tmpItemsList = new ArrayList<>(originalItems);
-
-            startPos = originalItems.size()-(isProgressShown ? 1 : 0);
-            insertionsNum = attachedItems.size();
-            tmpItemsList.addAll(startPos, attachedItems);
-
-            attachedItems.clear();
-            attachedItems = null;
-
-            results.values = tmpItemsList;
-            results.count = tmpItemsList.size();
-
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            originalItems.clear();
-            originalItems = (ArrayList<Object>) filterResults.values;
-            notifyItemRangeInserted(startPos, insertionsNum);
         }
     }
 
