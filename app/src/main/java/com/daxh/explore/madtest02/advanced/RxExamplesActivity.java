@@ -16,5 +16,6 @@ public class RxExamplesActivity extends AppCompatActivity {
 
         BindingUtils.bindButton(this, R.id.btFiltering, () -> new Intent(this, RxFilteredRecyclerViewActivity.class));
         BindingUtils.bindButton(this, R.id.btSorting, () -> new Intent(this, RxSortedRecyclerViewActivity.class));
+        BindingUtils.bindButton(this, R.id.btInfinite, () -> new Intent(this, RxInfiniteRecyclerViewActivity.class));
     }
 }

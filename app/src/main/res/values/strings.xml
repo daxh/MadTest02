@@ -3,6 +3,9 @@
     <string name="bt_simple_recyclerview">SIMPLE RECYCLER VIEW</string>
     <string name="bt_sorting">SORTING</string>
     <string name="bt_sorting_off">OFF</string>
+    <string name="bt_large">LARGE</string>
+    <string name="bt_medium">MEDIUM</string>
+    <string name="bt_small">SMALL</string>
     <string name="bt_sort_by_length">1&lt;2&lt;3</string>
     <string name="bt_sort_by_order">a&gt;b&gt;c</string>
     <string name="bt_filtering">FILTERING</string>
@@ -12,6 +15,7 @@
     <string name="bt_generic">GENERIC ADAPTER</string>
     <string name="bt_classic_recyclerview">CLASSIC RECYCLER VIEW</string>
     <string name="bt_headers">HEADERS</string>
+    <string name="bt_infinite">INFINITE SCROLLING</string>
     <string name="title_simple_recyclerview_usages_examples">Simple Recycler View Usages Examples</string>
     <string name="title_simple_recyclerview">Simple Recycler View</string>
     <string name="title_recyclerview_with_headers">Recycler View With Headers</string>
@@ -19,9 +23,11 @@
     <string name="title_classic_recyclerview_usages_examples">Classic Recycler View Usages Examples</string>
     <string name="title_filtered_recyclerview_example">Filtered Recycler View Example</string>
     <string name="title_sorted_recyclerview_example">Sorted Recycler View Example</string>
+    <string name="title_infinite_recyclerview_example">Infinite Recycler View Example</string>
     <string name="title_rx_recyclerview_usages_examples">Rx Recycler View Usages Examples</string>
     <string name="title_rx_filtered_recyclerview_example">Rx Filtered Recycler View Example</string>
     <string name="title_rx_sorted_recyclerview_example">Rx Sorted Recycler View Example</string>
+    <string name="title_rx_infinite_recyclerview_example">Rx Infinite Recycler View Example</string>
     <string name="default_item_view_text">Default item view text</string>
     <string name="filter_by">Filter by…</string>
     <string name="enter_command">Enter command...</string>
@@ -76,4 +82,23 @@
             these matters to this principle of selection: he rejects pleasures to secure other greater
             pleasures, or else he endures pains to avoid worse pains.</item>
     </array>
+
+    <array name="medium">
+        <item>Lorem ipsum dolor sit amet</item>
+        <item>Sed ut perspiciatis unde omnis</item>
+        <item>But I must explain to</item>
+        <item>At vero eos et accusamus</item>
+        <item>On the other hand, we</item>
+    </array>
+
+    <array name="small">
+        <item>Lorem ipsum</item>
+        <item>Sed ut</item>
+        <item>But I</item>
+        <item>At vero</item>
+        <item>On the</item>
+        <item>Lorem ipsum</item>
+        <item>Sed ut</item>
+    </array>
+
 </resources>

@@ -1,15 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/llRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@android:color/white">
+
+    <Button
+        android:id="@+id/btLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="@dimen/card_inner_offset_v"
+        android:layout_marginBottom="@dimen/card_inner_offset_v"
+        android:layout_marginLeft="@dimen/card_inner_offset_v"
+        android:layout_marginStart="@dimen/card_inner_offset_v"
+        android:text="@string/bt_large"/>
+
+    <Button
+        android:id="@+id/btMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/card_inner_offset_v"
+        android:layout_marginBottom="@dimen/card_inner_offset_v"
+        android:text="@string/bt_medium"/>
+
+    <Button
+        android:id="@+id/btSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/card_inner_offset_v"
+        android:layout_marginBottom="@dimen/card_inner_offset_v"
+        android:layout_marginRight="@dimen/card_inner_offset_v"
+        android:layout_marginEnd="@dimen/card_inner_offset_v"
+        android:text="@string/bt_small"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvItems"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/btLarge"
         android:scrollbars="vertical"/>
 
-</LinearLayout>
+</RelativeLayout>

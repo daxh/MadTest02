@@ -25,10 +25,10 @@
         android:text="@string/bt_sorting"/>
 
     <Button
-        android:id="@+id/btHeaders"
+        android:id="@+id/btInfinite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/bt_headers"/>
+        android:text="@string/bt_infinite"/>
 
     <Button
         android:id="@+id/btGeneric"
