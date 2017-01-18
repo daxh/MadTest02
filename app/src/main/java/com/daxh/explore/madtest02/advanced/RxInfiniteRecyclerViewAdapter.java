@@ -7,17 +7,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
 
+import com.annimon.stream.Optional;
 import com.daxh.explore.madtest02.R;
 import com.daxh.explore.madtest02.common.Item;
 import com.daxh.explore.madtest02.common.ItemViewHolder;
 import com.daxh.explore.madtest02.common.Progress;
 import com.daxh.explore.madtest02.common.ProgressViewHolder;
+import com.daxh.explore.madtest02.rxbinding.RecyclerAdapterItemRangeInsertedEvent;
 import com.jakewharton.rxbinding.support.v7.widget.RecyclerViewScrollEvent;
 import com.jakewharton.rxbinding.support.v7.widget.RxRecyclerView;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import rx.Observable;
 import rx.Subscription;
@@ -36,11 +38,14 @@ public class RxInfiniteRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
 
     private Listener listener;
 
+    private Optional<Subscription> addMoreItems = Optional.empty();
+
     private Subscription scroll;
     private int offset = 3;
     private boolean notify = true;
 
-    private DataObserver dataObserver;
+    private Subscription itemRangeInserted;
+    private final AtomicBoolean ignoreItemRangeInserted = new AtomicBoolean(false);
 
     private LinearLayoutManager llm;
 
@@ -49,8 +54,6 @@ public class RxInfiniteRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
     public RxInfiniteRecyclerViewAdapter(ArrayList<Object> items, Listener listener) {
         this.originalItems = items;
         this.listener = listener;
-
-        dataObserver = new DataObserver(this);
     }
 
     public Listener getListener() {
@@ -67,27 +70,24 @@ public class RxInfiniteRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
             progress = new Progress();
             originalItems.add(progress);
 
-            try { unregisterAdapterDataObserver(dataObserver); }
-                catch (IllegalStateException ignored) {}
-            notifyItemInserted(originalItems.indexOf(progress));
-            if (dataObserver != null) { registerAdapterDataObserver(dataObserver); }
+            ignoreItemRangeInserted.set(true);
+                notifyItemInserted(originalItems.indexOf(progress));
+            ignoreItemRangeInserted.set(false);
         } else if(!show && isProgressShown) {
             int pos = originalItems.indexOf(progress);
             originalItems.remove(progress);
 
-            try { unregisterAdapterDataObserver(dataObserver); }
-                catch (IllegalStateException ignored) {}
-            notifyItemRemoved(pos);
-            if (dataObserver != null) { registerAdapterDataObserver(dataObserver); }
+            ignoreItemRangeInserted.set(true);
+                notifyItemRemoved(pos);
+            ignoreItemRangeInserted.set(false);
 
             progress = null;
-            isProgressShown = false;
             isProgressShown = false;
         }
     }
 
     public void addAll(ArrayList<Object> items){
-        Observable.fromCallable(() -> {
+        addMoreItems = Optional.of(Observable.fromCallable(() -> {
             int startPos = originalItems.size() - (isProgressShown ? 1 : 0);
             int insertionNum = items.size();
             originalItems.addAll(startPos, items);
@@ -97,7 +97,7 @@ public class RxInfiniteRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(pair -> {
             notifyItemRangeInserted(pair.first, pair.second);
-        });
+        }));
     }
 
     public int getOriginalItemCount() {
@@ -166,7 +166,10 @@ public class RxInfiniteRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
         }
 
         scroll = RxRecyclerView.scrollEvents(recyclerView).subscribe(this::handleScroll);
-        registerAdapterDataObserver(dataObserver);
+        itemRangeInserted = com.daxh.explore.madtest02.rxbinding
+                .RxRecyclerViewAdapter.itemRangeInserted(this)
+                .filter(e -> !ignoreItemRangeInserted.get())
+                .subscribe(this::handleItemsRangeInserted);
     }
 
     @Override
@@ -174,8 +177,9 @@ public class RxInfiniteRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
         super.onDetachedFromRecyclerView(recyclerView);
         llm = null;
 
+        addMoreItems.ifPresent(Subscription::unsubscribe);
         scroll.unsubscribe();
-        unregisterAdapterDataObserver(dataObserver);
+        itemRangeInserted.unsubscribe();
     }
 
     private void handleScroll(RecyclerViewScrollEvent event) {
@@ -218,42 +222,31 @@ public class RxInfiniteRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
         }
     }
 
+    private void handleItemsRangeInserted(RecyclerAdapterItemRangeInsertedEvent event) {
+        if (getListener() != null) {
+
+            // This dirty trick allows us to show
+            // recyclerView animations in a right
+            // order
+
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (isPlaceForMoreDataAvailable()) {
+                        getListener().onPlaceForMoreDataAvailable(RxInfiniteRecyclerViewAdapter.this);
+                    }
+
+                    getListener().onDataInserted(RxInfiniteRecyclerViewAdapter.this);
+                }
+            }, 0);
+        }
+    }
+
     public interface Listener {
         void onNeedMoreData(RxInfiniteRecyclerViewAdapter adapter);
 
         void onPlaceForMoreDataAvailable(RxInfiniteRecyclerViewAdapter adapter);
 
         void onDataInserted(RxInfiniteRecyclerViewAdapter adapter);
-    }
-
-    public static class DataObserver extends RecyclerView.AdapterDataObserver {
-
-        private RxInfiniteRecyclerViewAdapter adapter;
-
-        public DataObserver(RxInfiniteRecyclerViewAdapter adapter) {
-            this.adapter = adapter;
-        }
-
-        @Override
-        public void onItemRangeInserted(int positionStart, int itemCount) {
-            super.onItemRangeInserted(positionStart, itemCount);
-            if (adapter.getListener() != null) {
-
-                // This dirty trick allows us to show
-                // recyclerView animations in a right
-                // order
-
-                adapter.handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (adapter.isPlaceForMoreDataAvailable()) {
-                            adapter.getListener().onPlaceForMoreDataAvailable(adapter);
-                        }
-
-                        adapter.getListener().onDataInserted(adapter);
-                    }
-                }, 0);
-            }
-        }
     }
 }
