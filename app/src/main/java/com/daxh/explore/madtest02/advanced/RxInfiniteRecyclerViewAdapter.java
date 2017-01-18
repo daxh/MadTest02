@@ -210,12 +210,7 @@ public class RxInfiniteRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
              *
              *  http://stackoverflow.com/questions/39445330/cannot-call-notifyiteminserted-method-in-a-scroll-callback-recyclerview-v724-2
              */
-            event.view().post(new Runnable() {
-                @Override
-                public void run() {
-                    invokeOnNext(RxInfiniteScrollEvent.NeedMoreData);
-                }
-            });
+            event.view().post(() -> invokeOnNext(RxInfiniteScrollEvent.NeedMoreData));
         }
 
         if (llm.findLastCompletelyVisibleItemPosition() < getOriginalItemCount()-offset && !notify){
@@ -227,15 +222,12 @@ public class RxInfiniteRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
         // This dirty trick allows us to show
         // recyclerView animations in a right
         // order
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (isPlaceForMoreDataAvailable()) {
-                    invokeOnNext(RxInfiniteScrollEvent.PlaceForMoreDataAvailable);
-                }
-
-                invokeOnNext(RxInfiniteScrollEvent.DataInserted);
+        handler.postDelayed(() -> {
+            if (isPlaceForMoreDataAvailable()) {
+                invokeOnNext(RxInfiniteScrollEvent.PlaceForMoreDataAvailable);
             }
+
+            invokeOnNext(RxInfiniteScrollEvent.DataInserted);
         }, 0);
     }
 
