@@ -28,10 +28,14 @@ public class InfiniteRecyclerViewActivity extends AppCompatActivity {
     private LinkedList<ArrayList<Object>> pages;
     private AsyncTask<Object, Object, ArrayList<Object>> longRunningTask;
 
+    private InfiniteScrollingListener listener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recyclerview);
+
+        listener = new InfiniteScrollingListener();
 
         llmItems = new LinearLayoutManager(this);
         rvItems = (RecyclerView) findViewById(R.id.rvItems);
@@ -79,7 +83,7 @@ public class InfiniteRecyclerViewActivity extends AppCompatActivity {
         }
 
         // Creating adapter
-        InfiniteRecyclerViewAdapter adapter = new InfiniteRecyclerViewAdapter(pages.removeFirst(), new InfiniteScrollingListener());
+        InfiniteRecyclerViewAdapter adapter = new InfiniteRecyclerViewAdapter(pages.removeFirst(), listener);
 
         // Setting up adapter for RecyclerView
         rvItems.setAdapter(adapter);
