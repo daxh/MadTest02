@@ -69,7 +69,21 @@ public class RxInfiniteRecyclerViewActivity extends RxAppCompatActivity {
                 ).collect(Collectors.toCollection(LinkedList::new));
 
         // Creating adapter
-        RxInfiniteRecyclerViewAdapter adapter = new RxInfiniteRecyclerViewAdapter(pages.removeFirst(), new InfiniteScrollingListener());
+        RxInfiniteRecyclerViewAdapter adapter = new RxInfiniteRecyclerViewAdapter(pages.removeFirst());
+        adapter.asObservable()
+                .compose(bindToLifecycle())
+                .subscribe(event -> {
+                    RxInfiniteRecyclerViewAdapter.RxInfiniteScrollEvent e = event.second;
+                    if (e == RxInfiniteRecyclerViewAdapter.RxInfiniteScrollEvent.DataInserted) {
+                        if (lrtSubscr.map(s -> !s.isUnsubscribed()).orElse(false)) {
+                            return;
+                        }
+                        event.first.showProgress(false);
+                    } else {
+                        asyncLoadNextPage(event.first);
+                    }
+                });
+
         // Setting up adapter for RecyclerView
         rvItems.ifPresent(rv -> rv.setAdapter(adapter));
     }
@@ -108,25 +122,5 @@ public class RxInfiniteRecyclerViewActivity extends RxAppCompatActivity {
                         adapter.showProgress(false);
                     }, () -> lrtSubscr = Optional.empty()
                 ));
-    }
-
-    public class InfiniteScrollingListener implements RxInfiniteRecyclerViewAdapter.Listener {
-        @Override
-        public void onNeedMoreData(RxInfiniteRecyclerViewAdapter adapter) {
-            asyncLoadNextPage(adapter);
-        }
-
-        @Override
-        public void onPlaceForMoreDataAvailable(RxInfiniteRecyclerViewAdapter adapter) {
-            asyncLoadNextPage(adapter);
-        }
-
-        @Override
-        public void onDataInserted(RxInfiniteRecyclerViewAdapter adapter) {
-            if (lrtSubscr.map(s -> !s.isUnsubscribed()).orElse(false)) {
-                return;
-            }
-            adapter.showProgress(false);
-        }
     }
 }

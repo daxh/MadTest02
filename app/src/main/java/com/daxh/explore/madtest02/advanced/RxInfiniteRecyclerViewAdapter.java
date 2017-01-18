@@ -22,9 +22,11 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.Subscriptions;
 
 public class RxInfiniteRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -36,8 +38,6 @@ public class RxInfiniteRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
     private boolean isProgressShown = false;
     private Progress progress;
 
-    private Listener listener;
-
     private Optional<Subscription> addMoreItems = Optional.empty();
 
     private Subscription scroll;
@@ -48,16 +48,19 @@ public class RxInfiniteRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
     private final AtomicBoolean ignoreItemRangeInserted = new AtomicBoolean(false);
 
     private LinearLayoutManager llm;
-
     private Handler handler = new Handler();
 
-    public RxInfiniteRecyclerViewAdapter(ArrayList<Object> items, Listener listener) {
-        this.originalItems = items;
-        this.listener = listener;
+    private Optional<Subscriber> subscriber = Optional.empty();
+
+    public  Observable<Pair<RxInfiniteRecyclerViewAdapter, RxInfiniteScrollEvent>> asObservable(){
+        return Observable.create(subscriber -> {
+            this.subscriber = Optional.of(subscriber);
+            subscriber.add(Subscriptions.create(() -> this.subscriber = Optional.empty()));
+        });
     }
 
-    public Listener getListener() {
-        return listener;
+    public RxInfiniteRecyclerViewAdapter(ArrayList<Object> items) {
+        this.originalItems = items;
     }
 
     public boolean isProgressShown() {
@@ -210,9 +213,7 @@ public class RxInfiniteRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
             event.view().post(new Runnable() {
                 @Override
                 public void run() {
-                    if (getListener() != null) {
-                        getListener().onNeedMoreData(RxInfiniteRecyclerViewAdapter.this);
-                    }
+                    invokeOnNext(RxInfiniteScrollEvent.NeedMoreData);
                 }
             });
         }
@@ -223,30 +224,24 @@ public class RxInfiniteRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private void handleItemsRangeInserted(RecyclerAdapterItemRangeInsertedEvent event) {
-        if (getListener() != null) {
-
-            // This dirty trick allows us to show
-            // recyclerView animations in a right
-            // order
-
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (isPlaceForMoreDataAvailable()) {
-                        getListener().onPlaceForMoreDataAvailable(RxInfiniteRecyclerViewAdapter.this);
-                    }
-
-                    getListener().onDataInserted(RxInfiniteRecyclerViewAdapter.this);
+        // This dirty trick allows us to show
+        // recyclerView animations in a right
+        // order
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (isPlaceForMoreDataAvailable()) {
+                    invokeOnNext(RxInfiniteScrollEvent.PlaceForMoreDataAvailable);
                 }
-            }, 0);
-        }
+
+                invokeOnNext(RxInfiniteScrollEvent.DataInserted);
+            }
+        }, 0);
     }
 
-    public interface Listener {
-        void onNeedMoreData(RxInfiniteRecyclerViewAdapter adapter);
-
-        void onPlaceForMoreDataAvailable(RxInfiniteRecyclerViewAdapter adapter);
-
-        void onDataInserted(RxInfiniteRecyclerViewAdapter adapter);
+    private void invokeOnNext(RxInfiniteScrollEvent event) {
+        subscriber.ifPresent(s -> s.onNext(Pair.create(this, event)));
     }
+
+    public enum RxInfiniteScrollEvent { NeedMoreData, PlaceForMoreDataAvailable, DataInserted }
 }
