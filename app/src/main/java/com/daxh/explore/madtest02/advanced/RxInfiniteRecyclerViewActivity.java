@@ -5,7 +5,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
 
+import com.annimon.stream.Collectors;
 import com.annimon.stream.Optional;
+import com.annimon.stream.Stream;
 import com.daxh.explore.madtest02.R;
 import com.daxh.explore.madtest02.common.Item;
 import com.daxh.explore.madtest02.utils.LoggerUtils;
@@ -61,14 +63,11 @@ public class RxInfiniteRecyclerViewActivity extends RxAppCompatActivity {
         }
 
         // Preparing data
-        String [] dataArray = getResources().getStringArray(resId);
-        pages = new LinkedList<>();
-        for (String data : dataArray) {
-            ArrayList<String> strings = new ArrayList<>(Arrays.asList(data.split(" ")));
-            ArrayList<Object> items = new ArrayList<>();
-            for (String s : strings) items.add(new Item(s));
-            pages.add(items);
-        }
+        pages = Stream.of(getResources().getStringArray(resId))
+                .map(s -> Stream.of(s.split(" "))
+                        .map(Item::new)
+                        .collect(Collectors.toCollection(ArrayList<Object>::new))
+                ).collect(Collectors.toCollection(LinkedList::new));
 
         // Creating adapter
         RxInfiniteRecyclerViewAdapter adapter = new RxInfiniteRecyclerViewAdapter(pages.removeFirst(), new InfiniteScrollingListener());
