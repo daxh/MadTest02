@@ -16,7 +16,6 @@ import com.orhanobut.logger.Logger;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 
 import rx.Observable;
@@ -30,7 +29,7 @@ public class RxInfiniteRecyclerViewActivity extends RxAppCompatActivity {
     private LinearLayoutManager llmItems;
 
     private LinkedList<ArrayList<Object>> pages;
-    private Subscription lrtSubscr;
+    private Optional<Subscription> lrtSubscr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +56,10 @@ public class RxInfiniteRecyclerViewActivity extends RxAppCompatActivity {
     }
 
     private void parseData(int resId){
-        if (lrtSubscr != null && !lrtSubscr.isUnsubscribed()) {
-            lrtSubscr.unsubscribe();
-            lrtSubscr = null;
-        }
+        lrtSubscr.map(s -> !s.isUnsubscribed()).filter(b -> b).ifPresent(b -> {
+            lrtSubscr.get().unsubscribe();
+            lrtSubscr = Optional.empty();
+        });
 
         // Preparing data
         pages = Stream.of(getResources().getStringArray(resId))
@@ -76,14 +75,12 @@ public class RxInfiniteRecyclerViewActivity extends RxAppCompatActivity {
     }
 
     private void asyncLoadNextPage(final RxInfiniteRecyclerViewAdapter adapter) {
-        if (lrtSubscr != null && !lrtSubscr.isUnsubscribed()) {
+        if (lrtSubscr.map(s -> !s.isUnsubscribed()).orElse(false)) {
             return;
         }
 
-        lrtSubscr = Observable.fromCallable(() -> {
-                    Logger.d("LRT START");
+        lrtSubscr = Optional.of(Observable.fromCallable(() -> {
                     Thread.sleep(2000);
-                    Logger.d("LRT END");
                     return pages.size() > 0 ? pages.removeFirst() : null;
                 })
                 .subscribeOn(Schedulers.io())
@@ -95,10 +92,7 @@ public class RxInfiniteRecyclerViewActivity extends RxAppCompatActivity {
                     // But such code probably should never be
                     // used in production as we should manage
                     // properly our long running operations
-                    if (lrtSubscr != null) {
-                        Logger.d("doOnUnsubscribe");
-                        Thread.currentThread().interrupt();
-                    }
+                    lrtSubscr.ifPresent(s -> Thread.currentThread().interrupt());
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(bindToLifecycle())
@@ -112,8 +106,8 @@ public class RxInfiniteRecyclerViewActivity extends RxAppCompatActivity {
                     throwable -> {
                         Logger.d(throwable.getLocalizedMessage());
                         adapter.showProgress(false);
-                    }, () -> lrtSubscr = null
-                );
+                    }, () -> lrtSubscr = Optional.empty()
+                ));
     }
 
     public class InfiniteScrollingListener implements RxInfiniteRecyclerViewAdapter.Listener {
@@ -129,7 +123,7 @@ public class RxInfiniteRecyclerViewActivity extends RxAppCompatActivity {
 
         @Override
         public void onDataInserted(RxInfiniteRecyclerViewAdapter adapter) {
-            if (lrtSubscr != null && !lrtSubscr.isUnsubscribed()) {
+            if (lrtSubscr.map(s -> !s.isUnsubscribed()).orElse(false)) {
                 return;
             }
             adapter.showProgress(false);
