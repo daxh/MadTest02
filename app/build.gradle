@@ -4,6 +4,9 @@ apply plugin: 'com.android.application'
 // Applying plugin
 apply plugin: 'me.tatarka.retrolambda'
 
+// Hugo Logger
+apply plugin: 'com.jakewharton.hugo'
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -11,8 +14,8 @@ android {
         applicationId "com.daxh.explore.madtest02"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 3
-        versionName "0.3"
+        versionCode 4
+        versionName "0.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -70,7 +73,8 @@ dependencies {
     compile 'com.jakewharton.rxbinding:rxbinding:1.0.0'
     compile 'com.jakewharton.rxbinding:rxbinding-support-v4:1.0.0'
     compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:1.0.0'
-
+    compile 'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:1.0.0'
+    
     // RxLifeCycle
     // Specific library that provides easier integration
     // between Activity/Fragment lifecycle and RxJava

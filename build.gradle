@@ -21,6 +21,9 @@ buildscript {
 
     dependencies {
         classpath 'me.tatarka:gradle-retrolambda:3.4.0'
+
+        // Hugo Logger
+        classpath 'com.jakewharton.hugo:hugo-plugin:1.2.1'
     }
 }
 
