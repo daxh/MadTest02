@@ -29,7 +29,7 @@ public class RxInfiniteRecyclerViewActivity extends RxAppCompatActivity {
     private LinearLayoutManager llmItems;
 
     private LinkedList<ArrayList<Object>> pages;
-    private Optional<Subscription> lrtSubscr;
+    private Optional<Subscription> lrtSubscr = Optional.empty();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
