@@ -34,7 +34,7 @@ public class RxInfiniteRecyclerViewActivity extends RxAppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recyclerview);
+        setContentView(R.layout.activity_infinite_recyclerview);
 
         LoggerUtils.brief();
 
