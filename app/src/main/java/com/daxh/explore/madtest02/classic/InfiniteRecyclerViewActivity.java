@@ -33,7 +33,7 @@ public class InfiniteRecyclerViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recyclerview);
+        setContentView(R.layout.activity_infinite_recyclerview);
 
         listener = new InfiniteScrollingListener();
 
