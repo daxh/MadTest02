@@ -49,3 +49,12 @@ when we will build our uber-adapter.
     2. **RecycleView with infinite scrolling in Rx-style** is based on **RecycleView with infinite
     scrolling** but everything what is possible was replaced with Rx-chains, some optionals added,
     Stream API used to parse data.
+
+7. **Generic Adapter**
+
+    The idea is to create the adapter that allows to display any type of item without need of
+    inheritance, and also provides a way to define behavior and operations over original dataset
+    on the flight.
+
+    1. **RecycleView with generic adapter** in general based on **simple implementation of RecyclerView**
+    with some tweeks and improvements to provide features described right above.

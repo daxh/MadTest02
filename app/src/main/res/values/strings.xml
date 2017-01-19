@@ -24,6 +24,7 @@
     <string name="title_filtered_recyclerview_example">Filtered Recycler View Example</string>
     <string name="title_sorted_recyclerview_example">Sorted Recycler View Example</string>
     <string name="title_infinite_recyclerview_example">Infinite Recycler View Example</string>
+    <string name="title_generic_recyclerview_example">Generic Recycler View Example</string>
     <string name="title_rx_recyclerview_usages_examples">Rx Recycler View Usages Examples</string>
     <string name="title_rx_filtered_recyclerview_example">Rx Filtered Recycler View Example</string>
     <string name="title_rx_sorted_recyclerview_example">Rx Sorted Recycler View Example</string>
