@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daxh.explore.madtest02.R;
 import com.daxh.explore.madtest02.common.Item;
@@ -41,6 +42,8 @@ public class GenericRecyclerViewActivity extends AppCompatActivity {
                     public ItemView parse(View rootView) {
                         ItemView itemView = new ItemView();
                         itemView.tvText = (TextView) rootView.findViewById(R.id.tvText);
+
+                        rootView.setOnClickListener(itemView);
                         return itemView;
                     }
                 },
@@ -50,6 +53,7 @@ public class GenericRecyclerViewActivity extends AppCompatActivity {
                         Item item = (Item) viewHolder.getItem();
                         ItemView itemView = (ItemView) viewHolder.getTree();
 
+                        itemView.title = item.getText();
                         itemView.tvText.setText(item.getText());
                     }
                 }
@@ -59,7 +63,13 @@ public class GenericRecyclerViewActivity extends AppCompatActivity {
         rvItems.setAdapter(adapter);
     }
 
-    public static class ItemView {
+    public static class ItemView implements View.OnClickListener {
+        public String title;
         public TextView tvText;
+
+        @Override
+        public void onClick(View view) {
+            Toast.makeText(view.getContext(), title + " clicked!", Toast.LENGTH_SHORT).show();
+        }
     }
 }
