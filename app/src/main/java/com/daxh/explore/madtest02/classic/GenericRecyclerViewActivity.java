@@ -35,26 +35,26 @@ public class GenericRecyclerViewActivity extends AppCompatActivity {
         for (String s : strings) items.add(new Item(s));
 
         // Creating adapter
-        GenericRecyclerViewAdapter<Item, ItemView> adapter = new GenericRecyclerViewAdapter<>(
+        GenericRecyclerViewAdapter<Item, ParsedItemViews> adapter = new GenericRecyclerViewAdapter<>(
                 items, R.layout.item_view,
-                new GenericRecyclerViewAdapter.GenericViewHolderParser<ItemView>() {
+                new GenericRecyclerViewAdapter.GenericViewHolderParser<ParsedItemViews>() {
                     @Override
-                    public ItemView parse(View rootView) {
-                        ItemView itemView = new ItemView();
-                        itemView.tvText = (TextView) rootView.findViewById(R.id.tvText);
+                    public ParsedItemViews parse(View rootView) {
+                        ParsedItemViews parsedItemViews = new ParsedItemViews();
+                        parsedItemViews.tvText = (TextView) rootView.findViewById(R.id.tvText);
 
-                        rootView.setOnClickListener(itemView);
-                        return itemView;
+                        rootView.setOnClickListener(parsedItemViews);
+                        return parsedItemViews;
                     }
                 },
                 new GenericRecyclerViewAdapter.GenericViewHolderBinder() {
                     @Override
                     public void bind(GenericRecyclerViewAdapter.GenericViewHolder viewHolder) {
                         Item item = (Item) viewHolder.getItem();
-                        ItemView itemView = (ItemView) viewHolder.getTree();
+                        ParsedItemViews parsedItemViews = (ParsedItemViews) viewHolder.getParsed();
 
-                        itemView.title = item.getText();
-                        itemView.tvText.setText(item.getText());
+                        parsedItemViews.title = item.getText();
+                        parsedItemViews.tvText.setText(item.getText());
                     }
                 }
         );
@@ -63,7 +63,7 @@ public class GenericRecyclerViewActivity extends AppCompatActivity {
         rvItems.setAdapter(adapter);
     }
 
-    public static class ItemView implements View.OnClickListener {
+    public static class ParsedItemViews implements View.OnClickListener {
         public String title;
         public TextView tvText;
 

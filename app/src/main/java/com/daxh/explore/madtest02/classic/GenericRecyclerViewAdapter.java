@@ -7,15 +7,15 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-public class GenericRecyclerViewAdapter<T, V> extends
-        RecyclerView.Adapter<GenericRecyclerViewAdapter.GenericViewHolder<T, V>> {
+public class GenericRecyclerViewAdapter<Item, Parsed> extends
+        RecyclerView.Adapter<GenericRecyclerViewAdapter.GenericViewHolder<Item, Parsed>> {
 
     private int itemViewId;
-    private ArrayList<T> items;
-    private final GenericViewHolderParser<V> parser;
+    private ArrayList<Item> items;
+    private final GenericViewHolderParser<Parsed> parser;
     private final GenericViewHolderBinder binder;
 
-    public GenericRecyclerViewAdapter(ArrayList<T> items, int itemViewId, GenericViewHolderParser<V> parser, GenericViewHolderBinder binder) {
+    public GenericRecyclerViewAdapter(ArrayList<Item> items, int itemViewId, GenericViewHolderParser<Parsed> parser, GenericViewHolderBinder binder) {
         this.itemViewId = itemViewId;
         this.items = items;
         this.parser = parser;
@@ -23,16 +23,16 @@ public class GenericRecyclerViewAdapter<T, V> extends
     }
 
     @Override
-    public GenericViewHolder<T, V> onCreateViewHolder(ViewGroup parent, int viewType) {
+    public GenericViewHolder<Item, Parsed> onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(itemViewId, parent, false);
-        GenericViewHolder<T, V> vh = new GenericViewHolder<>(itemView);
-        vh.tree = parser.parse(itemView);
+        GenericViewHolder<Item, Parsed> vh = new GenericViewHolder<>(itemView);
+        vh.parsed = parser.parse(itemView);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(GenericViewHolder<T, V> holder, int position) {
+    public void onBindViewHolder(GenericViewHolder<Item, Parsed> holder, int position) {
         holder.bindItem(items.get(position));
         binder.bind(holder);
     }
@@ -42,30 +42,29 @@ public class GenericRecyclerViewAdapter<T, V> extends
         return items == null ? 0 : items.size();
     }
 
-    static class GenericViewHolder<TT, VV> extends RecyclerView.ViewHolder {
-
-        private TT item;
-        private VV tree;
+    static class GenericViewHolder<I, P> extends RecyclerView.ViewHolder {
+        private I item;
+        private P parsed;
 
         public GenericViewHolder(View rootView) {
             super(rootView);
         }
 
-        public void bindItem(TT item) {
+        public void bindItem(I item) {
             this.item = item;
         }
 
-        public TT getItem() {
+        public I getItem() {
             return item;
         }
 
-        public VV getTree() {
-            return tree;
+        public P getParsed() {
+            return parsed;
         }
     }
 
-    public interface GenericViewHolderParser<VV> {
-        VV parse(View rootView);
+    public interface GenericViewHolderParser<P> {
+        P parse(View rootView);
     }
 
     public interface GenericViewHolderBinder {
