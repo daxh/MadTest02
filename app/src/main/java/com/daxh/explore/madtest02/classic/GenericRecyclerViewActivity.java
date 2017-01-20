@@ -12,8 +12,6 @@ import com.daxh.explore.madtest02.common.Item;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-
 
 public class GenericRecyclerViewActivity extends AppCompatActivity {
 
@@ -36,28 +34,32 @@ public class GenericRecyclerViewActivity extends AppCompatActivity {
         for (String s : strings) items.add(new Item(s));
 
         // Creating adapter
-        GenericRecyclerViewAdapter<Item> adapter = new GenericRecyclerViewAdapter<>(
+        GenericRecyclerViewAdapter<Item, ItemView> adapter = new GenericRecyclerViewAdapter<>(
                 items, R.layout.item_view,
-                new GenericRecyclerViewAdapter.GenericViewHolderParser() {
+                new GenericRecyclerViewAdapter.GenericViewHolderParser<ItemView>() {
                     @Override
-                    public HashMap<Integer, ? extends View> parse(View rootView) {
-                        HashMap<Integer, View> map = new HashMap<>();
-                        map.put(R.id.tvText, rootView.findViewById(R.id.tvText));
-                        return map;
+                    public ItemView parse(View rootView) {
+                        ItemView itemView = new ItemView();
+                        itemView.tvText = (TextView) rootView.findViewById(R.id.tvText);
+                        return itemView;
                     }
                 },
                 new GenericRecyclerViewAdapter.GenericViewHolderBinder() {
                     @Override
                     public void bind(GenericRecyclerViewAdapter.GenericViewHolder viewHolder) {
                         Item item = (Item) viewHolder.getItem();
-                        HashMap<Integer, View> map = viewHolder.getTree();
+                        ItemView itemView = (ItemView) viewHolder.getTree();
 
-                        ((TextView)map.get(R.id.tvText)).setText(item.getText());
+                        itemView.tvText.setText(item.getText());
                     }
                 }
         );
 
         // Setting up adapter for RecyclerView
         rvItems.setAdapter(adapter);
+    }
+
+    public static class ItemView {
+        public TextView tvText;
     }
 }

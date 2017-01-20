@@ -6,18 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-
-public class GenericRecyclerViewAdapter<T> extends
-        RecyclerView.Adapter<GenericRecyclerViewAdapter.GenericViewHolder<T>> {
+public class GenericRecyclerViewAdapter<T, V> extends
+        RecyclerView.Adapter<GenericRecyclerViewAdapter.GenericViewHolder<T, V>> {
 
     private int itemViewId;
     private ArrayList<T> items;
-    private final GenericViewHolderParser parser;
+    private final GenericViewHolderParser<V> parser;
     private final GenericViewHolderBinder binder;
 
-    public GenericRecyclerViewAdapter(ArrayList<T> items, int itemViewId, GenericViewHolderParser parser, GenericViewHolderBinder binder) {
+    public GenericRecyclerViewAdapter(ArrayList<T> items, int itemViewId, GenericViewHolderParser<V> parser, GenericViewHolderBinder binder) {
         this.itemViewId = itemViewId;
         this.items = items;
         this.parser = parser;
@@ -25,16 +23,16 @@ public class GenericRecyclerViewAdapter<T> extends
     }
 
     @Override
-    public GenericViewHolder<T> onCreateViewHolder(ViewGroup parent, int viewType) {
+    public GenericViewHolder<T, V> onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(itemViewId, parent, false);
-        GenericViewHolder<T> vh = new GenericViewHolder<T>(itemView);
+        GenericViewHolder<T, V> vh = new GenericViewHolder<>(itemView);
         vh.tree = parser.parse(itemView);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(GenericViewHolder<T> holder, int position) {
+    public void onBindViewHolder(GenericViewHolder<T, V> holder, int position) {
         holder.bindItem(items.get(position));
         binder.bind(holder);
     }
@@ -44,30 +42,30 @@ public class GenericRecyclerViewAdapter<T> extends
         return items == null ? 0 : items.size();
     }
 
-    static class GenericViewHolder<U> extends RecyclerView.ViewHolder {
+    static class GenericViewHolder<TT, VV> extends RecyclerView.ViewHolder {
 
-        private U item;
-        private HashMap<Integer, ? extends View> tree;
+        private TT item;
+        private VV tree;
 
         public GenericViewHolder(View rootView) {
             super(rootView);
         }
 
-        public void bindItem(U item) {
+        public void bindItem(TT item) {
             this.item = item;
         }
 
-        public U getItem() {
+        public TT getItem() {
             return item;
         }
 
-        public HashMap<Integer, ? extends View> getTree() {
+        public VV getTree() {
             return tree;
         }
     }
 
-    public interface GenericViewHolderParser {
-        HashMap<Integer, ? extends View> parse(View rootView);
+    public interface GenericViewHolderParser<VV> {
+        VV parse(View rootView);
     }
 
     public interface GenericViewHolderBinder {
