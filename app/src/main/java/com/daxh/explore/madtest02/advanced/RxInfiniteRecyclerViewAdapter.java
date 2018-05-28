@@ -228,7 +228,7 @@ public class RxInfiniteRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
             }
 
             invokeOnNext(RxInfiniteScrollEvent.DataInserted);
-        }, 0);
+        }, 1);
     }
 
     private void invokeOnNext(RxInfiniteScrollEvent event) {
