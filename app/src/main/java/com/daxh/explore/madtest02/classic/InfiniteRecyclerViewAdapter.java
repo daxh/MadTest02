@@ -232,7 +232,6 @@ public class InfiniteRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 // This dirty trick allows us to show
                 // recyclerView animations in a right
                 // order
-
                 adapter.handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -242,7 +241,7 @@ public class InfiniteRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
                         adapter.getListener().onDataInserted(adapter);
                     }
-                }, 0);
+                }, 1);
             }
         }
     }
